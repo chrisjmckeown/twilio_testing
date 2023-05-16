@@ -225,6 +225,7 @@ router.post("/sms_status_callback", async (req, res) => {
       );
   } catch (err) {
     logger.error(`sms_status_callback ${err}`);
+    console.log(`sms_status_callback ${err}`);
     return res.status(400).send(`sms_status_callback ${err}`);
   }
 });
