@@ -55,7 +55,8 @@ async function sendSMS() {
       body: `Hello world code ${toNumber}`,
       from: fromNumber,
       to: toNumber,
-      statusCallback: "http://postb.in/1234abcd",
+      statusCallback:
+        "https://fathomless-thicket-45351.herokuapp.com/sms_status_callback",
       // mediaUrl: ["https://demo.twilio.com/owl.png"],
     });
     const returnForLogging = JSON.stringify(result);
