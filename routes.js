@@ -213,15 +213,14 @@ router.post("/sms_status_callback", async (req, res) => {
       MessageStatus: "string",
       To: "string",
     });
-    const { MessageSid, MessageStatus, To, Body } = req.body;
-    console.log(req.body);
+    const { MessageSid, MessageStatus, To } = req.body;
     console.log(
-      `essage SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}, Body: ${Body}`
+      `essage SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}`
     );
     return res
       .status(200)
       .send(
-        `Message SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}, Body: ${Body}`
+        `Message SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}`
       );
   } catch (err) {
     logger.error(`sms_status_callback ${err}`);
