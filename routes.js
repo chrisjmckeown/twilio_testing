@@ -195,7 +195,6 @@ router.post("/ValidatePhoneNumber", async (req, res) => {
     return res.status(400).send(`validatePhoneNumber ${err}`);
   }
 });
-
 router.post("/MessageStatus", async (req, res) => {
   await ValidationService.validateOrThrow(req.body, {
     MessageSid: "string",
@@ -208,19 +207,23 @@ router.post("/MessageStatus", async (req, res) => {
 });
 // Endpoint to handle the Twilio status callback
 router.post("/sms_status_callback", async (req, res) => {
-  await ValidationService.validateOrThrow(req.body, {
-    MessageSid: "string",
-    MessageStatus: "string",
-    To: "string",
-  });
-  const { MessageSid, MessageStatus, To } = req.body;
+  try {
+    await ValidationService.validateOrThrow(req.body, {
+      MessageSid: "string",
+      MessageStatus: "string",
+      To: "string",
+    });
+    const { MessageSid, MessageStatus, To } = req.body;
 
-  // Send a response to Twilio
-  return res
-    .status(200)
-    .send(
-      `Message SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}`
-    );
+    return res
+      .status(200)
+      .send(
+        `Message SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}`
+      );
+  } catch (err) {
+    logger.error(`sms_status_callback ${err}`);
+    return res.status(400).send(`sms_status_callback ${err}`);
+  }
 });
 
 // Endpoint to handle the Twilio status callback

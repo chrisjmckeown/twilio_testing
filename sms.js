@@ -231,7 +231,7 @@ module.exports = {
         status: message.status,
         sid: message.sid,
       }));
-      return result;
+      return messages;
     } catch (err) {
       logger.error(`listAllMessages ${err}`);
     }
