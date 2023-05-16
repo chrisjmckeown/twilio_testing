@@ -214,8 +214,9 @@ router.post("/sms_status_callback", async (req, res) => {
       To: "string",
     });
     const { MessageSid, MessageStatus, To, Body } = req.body;
+    console.log(req.body);
     console.log(
-      `req.body: ${req.body} Message SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}, Body: ${Body}`
+      `essage SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}, Body: ${Body}`
     );
     return res
       .status(200)
