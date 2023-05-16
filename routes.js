@@ -95,7 +95,7 @@ router.post("/SendSMS", async (req, res) => {
     const toNumber = process.env.TWILIO_TO_NUMBER;
     const fromNumber = process.env.TWILIO_FROM_NUMBER;
     const result = await sms.sendSMS({
-      body: `Hello world code ${toNumber}`,
+      body: `Via heroku ${toNumber}`,
       from: fromNumber,
       to: toNumber,
       statusCallback:
@@ -226,7 +226,9 @@ router.post("/sms_status_callback", async (req, res) => {
       To: "string",
     });
     const { MessageSid, MessageStatus, To } = req.body;
-
+    console.log(
+      `Message SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}`
+    );
     return res
       .status(200)
       .send(
