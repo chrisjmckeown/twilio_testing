@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const logger = require("./loggerService");
+const logger = require("./log/loggerService");
 const runners = require("./runners");
 
 require("dotenv").config();
@@ -36,4 +36,22 @@ app.post("/MessageStatus", (req, res) => {
   console.log(`SID: ${messageSid}, Status: ${messageStatus}`);
 
   res.sendStatus(200);
+});
+// Endpoint to handle the Twilio status callback
+app.post("/sms_status_callback", (req, res) => {
+  // Extract the relevant information from the callback request
+  const messageSid = req.body.MessageSid;
+  const messageStatus = req.body.MessageStatus;
+  const recipientNumber = req.body.To;
+
+  // Process the callback data as per your application's requirements
+  // For example, you can update a database, log the status, or trigger other actions
+
+  // Log the received information for demonstration purposes
+  console.log(`Message SID: ${messageSid}`);
+  console.log(`Message Status: ${messageStatus}`);
+  console.log(`Recipient Number: ${recipientNumber}`);
+
+  // Send a response to Twilio
+  res.status(200).end();
 });
