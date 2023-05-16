@@ -6,7 +6,7 @@ const runners = require("./runners");
 require("dotenv").config();
 
 const app = express();
-const port = 7000;
+const port = process.env.PORT || 7000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
