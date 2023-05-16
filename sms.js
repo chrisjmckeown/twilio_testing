@@ -247,6 +247,9 @@ module.exports = {
     try {
       const account = require("twilio")(accountSid, authToken);
       const messages = await account.messages.list(filter);
+      if (messages.count === 0) {
+        return "No messages found";
+      }
       const result = messages.map((message) => ({
         to: message.to,
         from: message.from,
@@ -255,7 +258,7 @@ module.exports = {
       }));
       return result;
     } catch (err) {
-      logger.error(`smsListFilteredMessages ${error}`);
+      logger.error(`smsListFilteredMessages ${err}`);
     }
   },
   /**
