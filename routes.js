@@ -74,34 +74,22 @@ router.post("/CalculateAccountBilling", async (req, res) => {
 });
 router.post("/SendSMS", async (req, res) => {
   try {
-    // await ValidationService.validateOrThrow(req.body, {
-    //   to: "string",
-    //   from: "string",
-    //   body: "string",
-    // });
-    // const { body, to, from, mediaUrl } = req.body;
-    // const payload = {
-    //   body,
-    //   from,
-    //   to,
-    //   statusCallback:
-    //     "https://fathomless-thicket-45351.herokuapp.com/api/sms_status_callback",
-    // };
-
-    // if (mediaUrl) payload.mediaUrl = mediaUrl;
-    // const result = await sms.sendSMS(payload);
-    // const returnForLogging = JSON.stringify(result);
-    // logger.info(`sendSMS ${returnForLogging}`);
-    const toNumber = process.env.TWILIO_TO_NUMBER;
-    const fromNumber = process.env.TWILIO_FROM_NUMBER;
-    const result = await sms.sendSMS({
-      body: `Via heroku ${toNumber}`,
-      from: fromNumber,
-      to: toNumber,
+    await ValidationService.validateOrThrow(req.body, {
+      to: "string",
+      from: "string",
+      body: "string",
+    });
+    const { body, to, from, mediaUrl } = req.body;
+    const payload = {
+      body,
+      from,
+      to,
       statusCallback:
         "https://fathomless-thicket-45351.herokuapp.com/api/sms_status_callback",
-      // mediaUrl: ["https://demo.twilio.com/owl.png"],
-    });
+    };
+
+    if (mediaUrl) payload.mediaUrl = mediaUrl;
+    const result = await sms.sendSMS(payload);
     const returnForLogging = JSON.stringify(result);
     logger.info(`sendSMS ${returnForLogging}`);
     return res.status(200).send(`sendSMS ${returnForLogging}`);
@@ -224,15 +212,16 @@ router.post("/sms_status_callback", async (req, res) => {
       MessageSid: "string",
       MessageStatus: "string",
       To: "string",
+      Body: "string",
     });
-    const { MessageSid, MessageStatus, To } = req.body;
+    const { MessageSid, MessageStatus, To, Body } = req.body;
     console.log(
-      `Message SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}`
+      `Message SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}, Body: ${Body}`
     );
     return res
       .status(200)
       .send(
-        `Message SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}`
+        `Message SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}, Body: ${Body}`
       );
   } catch (err) {
     logger.error(`sms_status_callback ${err}`);

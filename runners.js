@@ -52,7 +52,7 @@ async function sendSMS() {
     const toNumber = process.env.TWILIO_TO_NUMBER;
     const fromNumber = process.env.TWILIO_FROM_NUMBER;
     const result = await sms.sendSMS({
-      body: `Hello world code ${toNumber}`,
+      body: `via runner ${toNumber}`,
       from: fromNumber,
       to: toNumber,
       statusCallback:
