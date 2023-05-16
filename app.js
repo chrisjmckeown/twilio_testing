@@ -55,3 +55,8 @@ app.post("/sms_status_callback", (req, res) => {
   // Send a response to Twilio
   res.status(200).end();
 });
+
+// Endpoint to handle the Twilio status callback
+app.get("*", (req, res) => {
+  res.status(200).send("catch all end point").end();
+});
