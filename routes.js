@@ -74,22 +74,34 @@ router.post("/CalculateAccountBilling", async (req, res) => {
 });
 router.post("/SendSMS", async (req, res) => {
   try {
-    await ValidationService.validateOrThrow(req.body, {
-      to: "string",
-      from: "string",
-      body: "string",
-    });
-    const { body, to, from, mediaUrl } = req.body;
-    const payload = {
-      body,
-      from,
-      to,
+    // await ValidationService.validateOrThrow(req.body, {
+    //   to: "string",
+    //   from: "string",
+    //   body: "string",
+    // });
+    // const { body, to, from, mediaUrl } = req.body;
+    // const payload = {
+    //   body,
+    //   from,
+    //   to,
+    //   statusCallback:
+    //     "https://fathomless-thicket-45351.herokuapp.com/api/sms_status_callback",
+    // };
+
+    // if (mediaUrl) payload.mediaUrl = mediaUrl;
+    // const result = await sms.sendSMS(payload);
+    // const returnForLogging = JSON.stringify(result);
+    // logger.info(`sendSMS ${returnForLogging}`);
+    const toNumber = process.env.TWILIO_TO_NUMBER;
+    const fromNumber = process.env.TWILIO_FROM_NUMBER;
+    const result = await sms.sendSMS({
+      body: `Hello world code ${toNumber}`,
+      from: fromNumber,
+      to: toNumber,
       statusCallback:
         "https://fathomless-thicket-45351.herokuapp.com/api/sms_status_callback",
-    };
-
-    if (mediaUrl) payload.mediaUrl = mediaUrl;
-    const result = await sms.sendSMS(payload);
+      // mediaUrl: ["https://demo.twilio.com/owl.png"],
+    });
     const returnForLogging = JSON.stringify(result);
     logger.info(`sendSMS ${returnForLogging}`);
     return res.status(200).send(`sendSMS ${returnForLogging}`);

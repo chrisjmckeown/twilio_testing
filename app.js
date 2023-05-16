@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const logger = require("./log/loggerService");
 const routes = require("./routes");
+const runners = require("./runners");
 
 require("dotenv").config();
 
@@ -28,4 +29,6 @@ console.log("---  -    -    -   o    |     o    -    | | |");
 console.log("  |    \\   /\\   /   |    |     |  /   \\  | | |");
 console.log("  |     \\ /  \\ /    |    |     |  \\   /  | | |");
 console.log("  |      -    -     |    ----  |    -    o o o");
-console.log("-_--------------------------------------------");
+console.log("----------------------------------------------");
+
+runners.runThisOne();
