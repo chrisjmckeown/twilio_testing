@@ -6,6 +6,8 @@ const _ = require("lodash");
 const env = require("./editENV");
 const ValidationService = require("./ValidationService");
 
+const nodeEnv = process.env.NODE_ENV;
+
 const ACCOUNT_STATUS = {
   SUSPENDED: "suspended",
   ACTIVE: "active",
@@ -271,6 +273,9 @@ router.post("/sms_status_callback", async (req, res) => {
     console.log(`sms_status_callback ${err}`);
     return res.status(400).send(`sms_status_callback ${err}`);
   }
+});
+router.get("/health", async (req, res) => {
+  return res.status(200).send({ Status: "online", Environment: nodeEnv });
 });
 router.get("*", (req, res) => {
   return res.status(200).send("catch all end point");
