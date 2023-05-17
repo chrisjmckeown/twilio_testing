@@ -275,7 +275,9 @@ router.post("/sms_status_callback", async (req, res) => {
   }
 });
 router.get("/health", async (req, res) => {
-  return res.status(200).send({ Status: "online", Environment: nodeEnv });
+  return res
+    .status(200)
+    .send({ Status: "online and working", Environment: nodeEnv });
 });
 router.get("*", (req, res) => {
   return res.status(200).send("catch all end point");
