@@ -13,6 +13,8 @@ app.use(bodyParser.json());
 
 // Log requests using Winston
 app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "*");
   logger.info(`${req.method} ${req.url} ${res.statusCode}`);
   next();
 });
@@ -25,10 +27,6 @@ app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
 
-console.log("---  -    -    -   o    |     o    -    | | |");
-console.log("  |    \\   /\\   /   |    |     |  /   \\  | | |");
-console.log("  |     \\ /  \\ /    |    |     |  \\   /  | | |");
-console.log("  |      -    -     |    ----  |    -    o o o");
-console.log("----------------------------------------------");
+console.log("Twilio app running");
 
 // runners.runThisOne();

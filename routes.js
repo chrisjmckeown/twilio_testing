@@ -12,7 +12,7 @@ const ACCOUNT_STATUS = {
   CLOSED: "closed",
 };
 
-router.post("/ReturnSubAccounts", async (req, res) => {
+router.post("/return-sub-accounts", async (req, res) => {
   try {
     await ValidationService.validateOrThrow(req.body, {
       subAccountSid: "string",
@@ -27,7 +27,7 @@ router.post("/ReturnSubAccounts", async (req, res) => {
     return res.status(400).send(`returnSubAccounts ${err}`);
   }
 });
-router.post("/CheckCredentialsAsync", async (req, res) => {
+router.post("/check-credentials-async", async (req, res) => {
   try {
     await ValidationService.validateOrThrow(req.body, {
       subAccountSid: "string",
@@ -42,7 +42,7 @@ router.post("/CheckCredentialsAsync", async (req, res) => {
     return res.status(400).send(`checkCredentialsAsync ${err}`);
   }
 });
-router.post("/AvailablePhoneNumbers", async (req, res) => {
+router.post("/available-phone-numbers", async (req, res) => {
   try {
     await ValidationService.validateOrThrow(req.body, {
       country: "string",
@@ -57,7 +57,7 @@ router.post("/AvailablePhoneNumbers", async (req, res) => {
     return res.status(400).send(`availablePhoneNumbers ${err}`);
   }
 });
-router.post("/CalculateAccountBilling", async (req, res) => {
+router.post("/calculate-account-billing", async (req, res) => {
   try {
     await ValidationService.validateOrThrow(req.body, {
       timeZone: "string",
@@ -72,7 +72,7 @@ router.post("/CalculateAccountBilling", async (req, res) => {
     return res.status(400).send(`calculateAccountBilling ${err}`);
   }
 });
-router.post("/SendSMS", async (req, res) => {
+router.post("/send-sms", async (req, res) => {
   try {
     await ValidationService.validateOrThrow(req.body, {
       to: "string",
@@ -98,7 +98,7 @@ router.post("/SendSMS", async (req, res) => {
     return res.status(400).send(`sendSMS ${err}`);
   }
 });
-router.post("/ListAllMessages", async (req, res) => {
+router.post("/list-all-messages", async (req, res) => {
   try {
     await ValidationService.validateOrThrow(req.body, {
       limit: "number",
@@ -107,13 +107,13 @@ router.post("/ListAllMessages", async (req, res) => {
     const result = await sms.listAllMessages({ limit });
     const returnForLogging = JSON.stringify(result);
     logger.info(`listAllMessages ${result.length} ${returnForLogging}`);
-    return res.status(200).send(`listAllMessages ${returnForLogging}`);
+    return res.status(200).send(result);
   } catch (err) {
     logger.error(`listAllMessages ${err}`);
     return res.status(400).send(`listAllMessages ${err}`);
   }
 });
-router.post("/ListFilteredMessages", async (req, res) => {
+router.post("/list-filtered-messages", async (req, res) => {
   try {
     await ValidationService.validateOrThrow(req.body, {
       to: "string",
@@ -137,7 +137,7 @@ router.post("/ListFilteredMessages", async (req, res) => {
     return res.status(400).send(`listFilteredMessages ${err}`);
   }
 });
-router.post("/ChangeAccountStatus", async (req, res) => {
+router.post("/change-account-status", async (req, res) => {
   try {
     await ValidationService.validateOrThrow(req.body, {
       subAccountSid: "string",
@@ -153,7 +153,7 @@ router.post("/ChangeAccountStatus", async (req, res) => {
     return res.status(400).send(`changeAccountStatus ${err}`);
   }
 });
-router.post("/CreateSubAccount", async (req, res) => {
+router.post("/create-sub-account", async (req, res) => {
   try {
     await ValidationService.validateOrThrow(req.body, {
       country: "string",
@@ -179,7 +179,7 @@ router.post("/CreateSubAccount", async (req, res) => {
     return res.status(400).send(`createSubAccount ${err}`);
   }
 });
-router.post("/ValidatePhoneNumber", async (req, res) => {
+router.post("/validate-phone-number", async (req, res) => {
   try {
     await ValidationService.validateOrThrow(req.body, {
       phoneNumber: "string",
@@ -195,7 +195,52 @@ router.post("/ValidatePhoneNumber", async (req, res) => {
     return res.status(400).send(`validatePhoneNumber ${err}`);
   }
 });
-router.post("/MessageStatus", async (req, res) => {
+router.post("/send-verification", async (req, res) => {
+  try {
+    await ValidationService.validateOrThrow(req.body, {
+      phoneNumber: "string",
+      channel: "string",
+    });
+    const { phoneNumber, channel } = req.body;
+    const result = await sms.sendNumberVerification(phoneNumber, channel);
+    const returnForLogging = JSON.stringify(result);
+    logger.info(`sendNumberVerification ${returnForLogging}`);
+    return res.status(200).send(`sendNumberVerification ${returnForLogging}`);
+  } catch (err) {
+    logger.error(`sendNumberVerification ${err}`);
+    return res.status(400).send(`sendNumberVerification ${err}`);
+  }
+});
+router.post("/verify-code", async (req, res) => {
+  try {
+    await ValidationService.validateOrThrow(req.body, {
+      phoneNumber: "string",
+      verificationCode: "string",
+    });
+    const { phoneNumber, verificationCode } = req.body;
+    const result = await sms.updateNumberVerification(
+      phoneNumber,
+      verificationCode
+    );
+    const returnForLogging = JSON.stringify(result);
+    logger.info(`updateNumberVerification ${returnForLogging}`);
+    if (result) {
+      // Code verification successful
+      return res
+        .status(200)
+        .send(`updateNumberVerification ${returnForLogging}`);
+    } else {
+      // Code verification failed
+      return res
+        .status(400)
+        .send(`updateNumberVerification ${returnForLogging}`);
+    }
+  } catch (err) {
+    logger.error(`updateNumberVerification ${err}`);
+    return res.status(400).send(`updateNumberVerification ${err}`);
+  }
+});
+router.post("/message-status", async (req, res) => {
   await ValidationService.validateOrThrow(req.body, {
     MessageSid: "string",
     MessageStatus: "string",
@@ -205,7 +250,6 @@ router.post("/MessageStatus", async (req, res) => {
 
   return res.status(200).send(`SID: ${MessageSid}, Status: ${MessageStatus}`);
 });
-// Endpoint to handle the Twilio status callback
 router.post("/sms_status_callback", async (req, res) => {
   try {
     await ValidationService.validateOrThrow(req.body, {
@@ -228,8 +272,6 @@ router.post("/sms_status_callback", async (req, res) => {
     return res.status(400).send(`sms_status_callback ${err}`);
   }
 });
-
-// Endpoint to handle the Twilio status callback
 router.get("*", (req, res) => {
   return res.status(200).send("catch all end point");
 });
