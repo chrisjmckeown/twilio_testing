@@ -338,4 +338,37 @@ module.exports = {
       return false;
     }
   },
+  /**
+   * @param {String}phoneNumber
+   * @param {String}friendlyName
+   * @returns {object}
+   */
+  addVerifiedPhoneNumber: async function (phoneNumber, friendlyName) {
+    if (!ACCOUNT_SID || !AUTH_TOKEN || !phoneNumber || !friendlyName) {
+      throw new Error("Invalid input");
+    }
+    const account = require("twilio")(ACCOUNT_SID, AUTH_TOKEN);
+
+    const validationRequests = await account.validationRequests.create({
+      phoneNumber,
+      friendlyName,
+    });
+    return validationRequests;
+  },
+  /**
+   * @returns {object}
+   */
+  verificationAttempts: async function () {
+    if (!ACCOUNT_SID || !AUTH_TOKEN) {
+      throw new Error("Invalid input");
+    }
+    const account = require("twilio")(ACCOUNT_SID, AUTH_TOKEN);
+    // const verificationAttempts = await account.verify.v2
+    //   .verificationAttempts("VEf83b0a9b5723821977c0ced21aabce4a")
+    //   .fetch();
+
+    const verificationAttempts =
+      await account.verify.v2.verificationAttempts.list({ limit: 20 });
+    return verificationAttempts;
+  },
 };

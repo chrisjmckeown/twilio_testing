@@ -274,10 +274,49 @@ router.post("/sms_status_callback", async (req, res) => {
     return res.status(400).send(`sms_status_callback ${err}`);
   }
 });
+router.post("/add-verified-phone-number", async (req, res) => {
+  try {
+    await ValidationService.validateOrThrow(req.body, {
+      phoneNumber: "string",
+      friendlyName: "string",
+    });
+    const { phoneNumber, friendlyName } = req.body;
+    const result = await sms.addVerifiedPhoneNumber(phoneNumber, friendlyName);
+    const returnForLogging = JSON.stringify(result);
+    logger.info(`addVerifiedPhoneNumber ${returnForLogging}`);
+    return res.status(200).send(`addVerifiedPhoneNumber ${returnForLogging}`);
+  } catch (err) {
+    logger.error(`addVerifiedPhoneNumber ${err}`);
+    return res.status(400).send(`addVerifiedPhoneNumber ${err}`);
+  }
+});
+router.post("/verification-attempts", async (req, res) => {
+  try {
+    const result = await sms.verificationAttempts();
+    const returnForLogging = JSON.stringify(result);
+    logger.info(`verificationAttempts ${returnForLogging}`);
+    return res.status(200).send(`verificationAttempts ${returnForLogging}`);
+  } catch (err) {
+    logger.error(`verificationAttempts ${err}`);
+    return res.status(400).send(`verificationAttempts ${err}`);
+  }
+});
 router.get("/health", async (req, res) => {
   return res
     .status(200)
     .send({ Status: "online and working", Environment: nodeEnv });
+});
+router.post("/messaging_service_callback", async (req, res) => {
+  try {
+    const returnForLogging = JSON.stringify(req.body);
+    logger.info(`sendSMS ${returnForLogging}`);
+    console.log(`callback initiated ${returnForLogging}`);
+    return res.status(200).send(`callback initiated ${returnForLogging}`);
+  } catch (err) {
+    logger.error(`messaging_service_callback ${err}`);
+    console.log(`messaging_service_callback ${err}`);
+    return res.status(400).send(`messaging_service_callback ${err}`);
+  }
 });
 router.get("*", (req, res) => {
   return res.status(200).send("catch all end point");

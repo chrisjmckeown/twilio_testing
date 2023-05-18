@@ -10,8 +10,8 @@ const log = winston.createLogger({
   ),
   defaultMeta: { service: "twilio-service" },
   transports: [
-    new winston.transports.File({ filename: "./log/error.log", level: "error" }),
-    new winston.transports.File({ filename: "./log/combined.log" }),
+    new winston.transports.File({ filename: "./log/err.log", level: "error" }),
+    new winston.transports.File({ filename: "./log/output.log" }),
   ],
 });
 module.exports = log;
