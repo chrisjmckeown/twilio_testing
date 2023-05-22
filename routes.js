@@ -99,7 +99,7 @@ router.post("/send-sms", async (req, res) => {
         "https://fathomless-thicket-45351.herokuapp.com/api/sms_status_callback";
     } else {
       payload.messagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
-      shortenUrls = true;
+      payload.shortenUrls = true;
     }
 
     if (mediaUrl) payload.mediaUrl = mediaUrl;
