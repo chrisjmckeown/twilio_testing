@@ -34,6 +34,7 @@ async function availablePhoneNumbers(countryCode) {
     return smsCapableNumbers;
   } catch (err) {
     logger.error(`availablePhoneNumbers ${err}`);
+    throw new Error(err.message);
   }
 }
 module.exports = {
@@ -51,6 +52,7 @@ module.exports = {
       return subAccounts;
     } catch (err) {
       logger.error(`returnSubAccounts ${err}`);
+      throw new Error(err.message);
     }
   },
   /**
@@ -66,6 +68,7 @@ module.exports = {
       return smsCapableNumbers;
     } catch (err) {
       logger.error(`availablePhoneNumbers ${err}`);
+      throw new Error(err.message);
     }
   },
   /**
@@ -88,6 +91,7 @@ module.exports = {
       return subAccountTwilioAPIApp;
     } catch (err) {
       logger.error(`createSubAccount ${err}`);
+      throw new Error(err.message);
     }
   },
   /**
@@ -108,6 +112,7 @@ module.exports = {
       return account;
     } catch (err) {
       logger.error(`addPhoneNumber ${err}`);
+      throw new Error(err.message);
     }
   },
   /**
@@ -118,8 +123,12 @@ module.exports = {
    * @returns {Promise} <String>
    */
   sendSMS: async function (params) {
-    const { body, to, from, mediaUrl } = params;
-    if ((!ACCOUNT_SID || !AUTH_TOKEN, !body || !to || !from)) {
+    const { body, to, from, messagingServiceSid } = params;
+    console.log(from, messagingServiceSid);
+    if (
+      (!ACCOUNT_SID || !AUTH_TOKEN,
+      !body || !to || !(from || messagingServiceSid))
+    ) {
       throw new Error("Invalid input");
     }
     try {
@@ -128,6 +137,7 @@ module.exports = {
       return result;
     } catch (err) {
       logger.error(`sendSMS ${err}`);
+      throw new Error(err.message);
     }
   },
   /**
@@ -149,6 +159,7 @@ module.exports = {
       return _.get(subAaccount, "status", "") === "active";
     } catch (err) {
       logger.error(`checkCredentialsAsync ${err}`);
+      throw new Error(err.message);
     }
   },
   /**
@@ -214,6 +225,7 @@ module.exports = {
       );
     } catch (err) {
       logger.error(`calculateAccountBilling ${err}`);
+      throw new Error(err.message);
     }
   },
   /**
@@ -235,6 +247,7 @@ module.exports = {
       return messages;
     } catch (err) {
       logger.error(`listAllMessages ${err}`);
+      throw new Error(err.message);
     }
   },
   /**
@@ -260,6 +273,7 @@ module.exports = {
       return result;
     } catch (err) {
       logger.error(`smsListFilteredMessages ${err}`);
+      throw new Error(err.message);
     }
   },
   /**
@@ -270,12 +284,17 @@ module.exports = {
     if (!ACCOUNT_SID || !AUTH_TOKEN || !status || !subAccountSid) {
       throw new Error("Invalid input");
     }
-    const account = require("twilio")(ACCOUNT_SID, AUTH_TOKEN);
+    try {
+      const account = require("twilio")(ACCOUNT_SID, AUTH_TOKEN);
 
-    const subAccount = await account.api
-      .accounts(subAccountSid)
-      .update({ status });
-    return `Account ${subAccount.friendlyName} has been successfully changed to the status:${status}`;
+      const subAccount = await account.api
+        .accounts(subAccountSid)
+        .update({ status });
+      return `Account ${subAccount.friendlyName} has been successfully changed to the status:${status}`;
+    } catch (err) {
+      logger.error(`changeAccountStatus ${err}`);
+      throw new Error(err.message);
+    }
   },
   /**
    * @param {String}status
@@ -285,21 +304,26 @@ module.exports = {
     if (!ACCOUNT_SID || !AUTH_TOKEN || !phoneNumber || !inputTypes) {
       throw new Error("Invalid input");
     }
-    const account = require("twilio")(ACCOUNT_SID, AUTH_TOKEN);
+    try {
+      const account = require("twilio")(ACCOUNT_SID, AUTH_TOKEN);
 
-    const types = typeof inputTypes === "object" ? inputTypes : [inputTypes];
-    const result = await account.lookups.v1
-      .phoneNumbers(phoneNumber)
-      .fetch({ type: types });
-
-    if (types.includes("lti")) {
-      const { lineTypeIntelligence } = await account.lookups.v2
+      const types = typeof inputTypes === "object" ? inputTypes : [inputTypes];
+      const result = await account.lookups.v1
         .phoneNumbers(phoneNumber)
-        .fetch({ fields: "line_type_intelligence" });
+        .fetch({ type: types });
 
-      result.lineTypeIntelligence = lineTypeIntelligence;
+      if (types.includes("lti")) {
+        const { lineTypeIntelligence } = await account.lookups.v2
+          .phoneNumbers(phoneNumber)
+          .fetch({ fields: "line_type_intelligence" });
+
+        result.lineTypeIntelligence = lineTypeIntelligence;
+      }
+      return result;
+    } catch (err) {
+      logger.error(`validatePhoneNumber ${err}`);
+      throw new Error(err.message);
     }
-    return result;
   },
   /**
    * @param {String}phoneNumber
@@ -310,12 +334,17 @@ module.exports = {
     if (!ACCOUNT_SID || !AUTH_TOKEN || !phoneNumber || !channel) {
       throw new Error("Invalid input");
     }
-    const account = require("twilio")(ACCOUNT_SID, AUTH_TOKEN);
+    try {
+      const account = require("twilio")(ACCOUNT_SID, AUTH_TOKEN);
 
-    const result = await account.verify.v2
-      .services(VERIFICATION_SERVICE_SID)
-      .verifications.create({ to: phoneNumber, channel });
-    return result;
+      const result = await account.verify.v2
+        .services(VERIFICATION_SERVICE_SID)
+        .verifications.create({ to: phoneNumber, channel });
+      return result;
+    } catch (err) {
+      logger.error(`sendNumberVerification ${err}`);
+      throw new Error(err.message);
+    }
   },
   /**
    * @param {String}phoneNumber
@@ -326,16 +355,21 @@ module.exports = {
     if (!ACCOUNT_SID || !AUTH_TOKEN || !phoneNumber || !verificationCode) {
       throw new Error("Invalid input");
     }
-    const account = require("twilio")(ACCOUNT_SID, AUTH_TOKEN);
+    try {
+      const account = require("twilio")(ACCOUNT_SID, AUTH_TOKEN);
 
-    const verificationCheck = await account.verify.v2
-      .services(VERIFICATION_SERVICE_SID)
-      .verificationChecks.create({ to: phoneNumber, code: verificationCode });
+      const verificationCheck = await account.verify.v2
+        .services(VERIFICATION_SERVICE_SID)
+        .verificationChecks.create({ to: phoneNumber, code: verificationCode });
 
-    if (verificationCheck.status === "approved") {
-      return true;
-    } else {
-      return false;
+      if (verificationCheck.status === "approved") {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err) {
+      logger.error(`updateNumberVerification ${err}`);
+      throw new Error(err.message);
     }
   },
   /**
@@ -347,13 +381,18 @@ module.exports = {
     if (!ACCOUNT_SID || !AUTH_TOKEN || !phoneNumber || !friendlyName) {
       throw new Error("Invalid input");
     }
-    const account = require("twilio")(ACCOUNT_SID, AUTH_TOKEN);
+    try {
+      const account = require("twilio")(ACCOUNT_SID, AUTH_TOKEN);
 
-    const validationRequests = await account.validationRequests.create({
-      phoneNumber,
-      friendlyName,
-    });
-    return validationRequests;
+      const validationRequests = await account.validationRequests.create({
+        phoneNumber,
+        friendlyName,
+      });
+      return validationRequests;
+    } catch (err) {
+      logger.error(`addVerifiedPhoneNumber ${err}`);
+      throw new Error(err.message);
+    }
   },
   /**
    * @returns {object}
@@ -362,13 +401,18 @@ module.exports = {
     if (!ACCOUNT_SID || !AUTH_TOKEN) {
       throw new Error("Invalid input");
     }
-    const account = require("twilio")(ACCOUNT_SID, AUTH_TOKEN);
-    // const verificationAttempts = await account.verify.v2
-    //   .verificationAttempts("VEf83b0a9b5723821977c0ced21aabce4a")
-    //   .fetch();
+    try {
+      const account = require("twilio")(ACCOUNT_SID, AUTH_TOKEN);
+      // const verificationAttempts = await account.verify.v2
+      //   .verificationAttempts("VEf83b0a9b5723821977c0ced21aabce4a")
+      //   .fetch();
 
-    const verificationAttempts =
-      await account.verify.v2.verificationAttempts.list({ limit: 20 });
-    return verificationAttempts;
+      const verificationAttempts =
+        await account.verify.v2.verificationAttempts.list({ limit: 20 });
+      return verificationAttempts;
+    } catch (err) {
+      logger.error(`verificationAttempts ${err}`);
+      throw new Error(err.message);
+    }
   },
 };

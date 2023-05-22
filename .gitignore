@@ -1,5 +1,8 @@
 .env
 /node_modules
 /twilio
+/DomainSite
 /log/output.log
 /log/err.log
+cert.txt
+/bash
