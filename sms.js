@@ -72,7 +72,8 @@ module.exports = {
     }
   },
   /**
-   * @param {Object} params
+   * @param {String} accountName
+   * @param {String} countryCode
    * @returns {Promise} {account}
    */
   createSubAccount: async function (accountName, countryCode) {
@@ -95,7 +96,9 @@ module.exports = {
     }
   },
   /**
-   * @param {Object} account
+   * @param {String} accoutSid
+   * @param {String} accoutAuthToken
+   * @param {String} countryCode
    * @returns {Promise} {account}
    */
   addPhoneNumber: async function (accoutSid, accoutAuthToken, countryCode) {
@@ -124,7 +127,6 @@ module.exports = {
    */
   sendSMS: async function (params) {
     const { body, to, from, messagingServiceSid } = params;
-    console.log(from, messagingServiceSid);
     if (
       (!ACCOUNT_SID || !AUTH_TOKEN,
       !body || !to || !(from || messagingServiceSid))
@@ -229,6 +231,7 @@ module.exports = {
     }
   },
   /**
+   * @param {string} filter
    * @returns {Promise} Message[] List of all messages
    */
   listAllMessages: async function (filter) {
@@ -278,6 +281,7 @@ module.exports = {
   },
   /**
    * @param {String}status
+   * @param {String}subAccountSid
    * @returns {String} statement describing the action taken
    */
   changeAccountStatus: async function (status, subAccountSid) {
@@ -297,7 +301,8 @@ module.exports = {
     }
   },
   /**
-   * @param {String}status
+   * @param {String}phoneNumber
+   * @param {Object | String}inputTypes
    * @returns {String} statement describing the action taken
    */
   validatePhoneNumber: async function (phoneNumber, inputTypes) {

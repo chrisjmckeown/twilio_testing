@@ -5,9 +5,9 @@ const logger = require("./log/loggerService");
 const _ = require("lodash");
 const env = require("./editENV");
 const ValidationService = require("./ValidationService");
+const { getDb } = require("./db");
 
 const nodeEnv = process.env.NODE_ENV;
-
 const ACCOUNT_STATUS = {
   SUSPENDED: "suspended",
   ACTIVE: "active",
@@ -278,30 +278,6 @@ router.post("/message-status", async (req, res) => {
 
   return res.status(200).send(`SID: ${MessageSid}, Status: ${MessageStatus}`);
 });
-router.post("/sms_status_callback", async (req, res) => {
-  try {
-    await ValidationService.validateOrThrow(req.body, {
-      MessageSid: "string",
-      MessageStatus: "string",
-      To: "string",
-    });
-    const { MessageSid, MessageStatus, To } = req.body;
-    console.log(
-      `essage SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}`
-    );
-    return res
-      .status(200)
-      .send(
-        `Message SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}`
-      );
-  } catch (err) {
-    logger.error(`sms_status_callback ${err}`);
-    console.log(`sms_status_callback ${err}`);
-    return res
-      .status(400)
-      .send({ error: "sms_status_callback", message: err.message });
-  }
-});
 router.post("/add-verified-phone-number", async (req, res) => {
   try {
     await ValidationService.validateOrThrow(req.body, {
@@ -338,9 +314,44 @@ router.get("/health", async (req, res) => {
     .status(200)
     .send({ Status: "online and working", Environment: nodeEnv });
 });
+router.post("/sms_status_callback", async (req, res) => {
+  try {
+    await ValidationService.validateOrThrow(req.body, {
+      MessageSid: "string",
+      MessageStatus: "string",
+      To: "string",
+    });
+    const { MessageSid, MessageStatus, To } = req.body;
+    const db = getDb();
+    const message = req.body;
+    await db.collection("smsCallbackURL").insertOne(message);
+    console.log(
+      `essage SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}`
+    );
+    return res
+      .status(200)
+      .send(
+        `Message SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}`
+      );
+  } catch (err) {
+    logger.error(`sms_status_callback ${err}`);
+    console.log(`sms_status_callback ${err}`);
+    return res
+      .status(400)
+      .send({ error: "sms_status_callback", message: err.message });
+  }
+});
+router.get("/sms_status_callback", async (req, res) => {
+  const db = getDb();
+  const result = await db.collection("smsCallbackURL").find().toArray();
+  res.status(200).json(result);
+});
 router.post("/messaging_service_callback", async (req, res) => {
   try {
-    const returnForLogging = JSON.stringify(req.body);
+    const db = getDb();
+    const message = req.body;
+    await db.collection("messageCallbackURL").insertOne(message);
+    const returnForLogging = JSON.stringify(message);
     logger.info(`messaging_service_callback ${returnForLogging}`);
     console.log(`messaging_service_callback initiated ${returnForLogging}`);
     return res
@@ -354,9 +365,17 @@ router.post("/messaging_service_callback", async (req, res) => {
       .send({ error: "messaging_service_callback", message: err.message });
   }
 });
+router.get("/messaging_service_callback", async (req, res) => {
+  const db = getDb();
+  const result = await db.collection("messageCallbackURL").find().toArray();
+  res.status(200).json(result);
+});
 router.post("/messaging_fallback_URL", async (req, res) => {
   try {
-    const returnForLogging = JSON.stringify(req.body);
+    const db = getDb();
+    const message = req.body;
+    await db.collection("fallBackURL").insertOne(message);
+    const returnForLogging = JSON.stringify(message);
     logger.info(`messaging_fallback_URL ${returnForLogging}`);
     console.log(`messaging_fallback_URL initiated ${returnForLogging}`);
     return res
@@ -370,9 +389,17 @@ router.post("/messaging_fallback_URL", async (req, res) => {
       .send({ error: "messaging_fallback_URL", message: err.message });
   }
 });
+router.get("/messaging_fallback_URL", async (req, res) => {
+  const db = getDb();
+  const result = await db.collection("fallBackURL").find().toArray();
+  res.status(200).json(result);
+});
 router.post("/messaging_callback_URL", async (req, res) => {
   try {
-    const returnForLogging = JSON.stringify(req.body);
+    const db = getDb();
+    const message = req.body;
+    await db.collection("callBackURL").insertOne(message);
+    const returnForLogging = JSON.stringify(message);
     logger.info(`messaging_callback_URL ${returnForLogging}`);
     console.log(`messaging_callback_URL initiated ${returnForLogging}`);
     return res
@@ -385,6 +412,11 @@ router.post("/messaging_callback_URL", async (req, res) => {
       .status(400)
       .send({ error: "messaging_callback_URL", message: err.message });
   }
+});
+router.get("/messaging_callback_URL", async (req, res) => {
+  const db = getDb();
+  const result = await db.collection("callBackURL").find().toArray();
+  res.status(200).json(result);
 });
 router.get("*", (req, res) => {
   return res.status(200).send("catch all end point");
