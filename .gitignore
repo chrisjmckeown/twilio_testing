@@ -1,8 +1,9 @@
 .env
 /node_modules
-/twilio
+/FrontEnd
 /DomainSite
-/log/output.log
-/log/err.log
+/Logger/output.log
+/Logger/err.log
 cert.txt
-/bash
+/Bash
+/Personal

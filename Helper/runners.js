@@ -1,7 +1,7 @@
-const sms = require("./sms");
-const logger = require("./log/loggerService");
+const sms = require("../sms");
+const logger = require("./Logger/loggerService");
 const _ = require("lodash");
-const env = require("./editENV");
+const env = require("../Helper/editENV");
 
 const subAccountSid = process.env.TWILIO_SUBACCOUNT_SID;
 const toNumber = process.env.TWILIO_TO_NUMBER;
@@ -16,35 +16,35 @@ async function returnSubAccounts() {
   try {
     const result = await sms.returnSubAccounts(subAccountSid);
     const returnForLogging = JSON.stringify(result);
-    logger.info(`returnSubAccounts ${returnForLogging}`);
+    logger(`returnSubAccounts ${returnForLogging}`);
   } catch (err) {
-    logger.error(`returnSubAccounts ${err}`);
+    logger(`returnSubAccounts ${err}`);
   }
 }
 async function checkCredentialsAsync() {
   try {
     const result = await sms.checkCredentialsAsync(subAccountSid);
-    logger.info(`checkCredentialsAsync ${result}`);
+    logger(`checkCredentialsAsync ${result}`);
   } catch (err) {
-    logger.error(`checkCredentialsAsync ${err}`);
+    logger(`checkCredentialsAsync ${err}`);
   }
 }
 async function availablePhoneNumbers() {
   try {
     const result = await sms.availablePhoneNumbers("US");
     const returnForLogging = JSON.stringify(result);
-    logger.info(`availablePhoneNumbers ${result.length} ${returnForLogging}`);
+    logger(`availablePhoneNumbers ${result.length} ${returnForLogging}`);
   } catch (err) {
-    logger.error(`availablePhoneNumbers ${err}`);
+    logger(`availablePhoneNumbers ${err}`);
   }
 }
 async function calculateAccountBilling() {
   try {
     const result = await sms.calculateAccountBilling("America/Dawson");
     const returnForLogging = JSON.stringify(result);
-    logger.info(`calculateAccountBilling ${returnForLogging}`);
+    logger(`calculateAccountBilling ${returnForLogging}`);
   } catch (err) {
-    logger.error(`calculateAccountBilling ${err}`);
+    logger(`calculateAccountBilling ${err}`);
   }
 }
 async function sendSMS() {
@@ -60,18 +60,18 @@ async function sendSMS() {
       // mediaUrl: ["https://demo.twilio.com/owl.png"],
     });
     const returnForLogging = JSON.stringify(result);
-    logger.info(`sendSMS ${returnForLogging}`);
+    logger(`sendSMS ${returnForLogging}`);
   } catch (err) {
-    logger.error(`sendSMS ${err}`);
+    logger(`sendSMS ${err}`);
   }
 }
 async function listAllMessages() {
   try {
     const result = await sms.listAllMessages();
     const returnForLogging = JSON.stringify(result);
-    logger.info(`listAllMessages ${result.length} ${returnForLogging}`);
+    logger(`listAllMessages ${result.length} ${returnForLogging}`);
   } catch (err) {
-    logger.error(`listAllMessages ${err}`);
+    logger(`listAllMessages ${err}`);
   }
 }
 async function listFilteredMessages() {
@@ -84,18 +84,18 @@ async function listFilteredMessages() {
       limit: 20,
     });
     const returnForLogging = JSON.stringify(result);
-    logger.info(`listFilteredMessages ${result.length} ${returnForLogging}`);
+    logger(`listFilteredMessages ${result.length} ${returnForLogging}`);
   } catch (err) {
-    logger.error(`listFilteredMessages ${err}`);
+    logger(`listFilteredMessages ${err}`);
   }
 }
 async function changeAccountStatus(status) {
   try {
     const result = await sms.changeAccountStatus(status, subAccountSid);
     const returnForLogging = JSON.stringify(result);
-    logger.info(`changeAccountStatus ${returnForLogging}`);
+    logger(`changeAccountStatus ${returnForLogging}`);
   } catch (err) {
-    logger.error(`changeAccountStatus ${err}`);
+    logger(`changeAccountStatus ${err}`);
   }
 }
 async function createSubAccount() {
@@ -105,16 +105,16 @@ async function createSubAccount() {
     env.setEnvValue("TWILIO_SUBACCOUNT_SID", accountSid);
     env.setEnvValue("TWILIO_SUBACCOUNT_AUTH_TOKEN", password);
     const returnForLogging = JSON.stringify(result);
-    logger.info(`createSubAccount ${returnForLogging}`);
+    logger(`createSubAccount ${returnForLogging}`);
     const addPhoneNumberResult = await sms.addPhoneNumber(
       accountSid,
       password,
       "US"
     );
     const returnForLogging2 = JSON.stringify(addPhoneNumberResult);
-    logger.info(`addPhoneNumber ${returnForLogging2}`);
+    logger(`addPhoneNumber ${returnForLogging2}`);
   } catch (err) {
-    logger.error(`createSubAccount ${err}`);
+    logger(`createSubAccount ${err}`);
   }
 }
 async function validatePhoneNumber(phoneNumber) {
@@ -124,9 +124,9 @@ async function validatePhoneNumber(phoneNumber) {
       "carrier",
     ]);
     const returnForLogging = JSON.stringify(result);
-    logger.info(`validatePhoneNumber ${returnForLogging}`);
+    logger(`validatePhoneNumber ${returnForLogging}`);
   } catch (err) {
-    logger.error(`validatePhoneNumber ${err}`);
+    logger(`validatePhoneNumber ${err}`);
   }
 }
 

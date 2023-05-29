@@ -14,4 +14,10 @@ const log = winston.createLogger({
     new winston.transports.File({ filename: "./log/output.log" }),
   ],
 });
-module.exports = log;
+
+function consoleLog(message, consoleLog = true) {
+  if (consoleLog) console.log(message);
+  log.info(message);
+}
+
+module.exports = consoleLog;

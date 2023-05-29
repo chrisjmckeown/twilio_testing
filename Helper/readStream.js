@@ -1,0 +1,31 @@
+const fs = require("fs");
+const csvParse = require("csv-parser");
+const logger = require("../Logger/loggerService");
+
+module.exports = {
+  readFromCSV: async (filePath) => {
+    const results = [];
+    const batchSize = 500000;
+    let count = 0;
+    return new Promise((resolve, reject) => {
+      fs.createReadStream(filePath)
+        .pipe(csvParse())
+        .on("data", (data) => {
+          if (count === batchSize) {
+            logger(`${batchSize} read ${results.length} in total`);
+            count = 0;
+          }
+          count++;
+          results.push(data);
+        })
+        .on("end", () => {
+          logger(`All rows read ${filePath} ${results.length}}`);
+          resolve(results);
+        })
+        .on("error", (error) => {
+          logger(`Failed to read rows`);
+          reject(error);
+        });
+    });
+  },
+};

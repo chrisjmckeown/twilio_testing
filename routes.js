@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const sms = require("./sms");
-const logger = require("./log/loggerService");
+const sms = require("./smsControllers");
+const logger = require("./Logger/loggerService");
 const _ = require("lodash");
-const env = require("./editENV");
-const ValidationService = require("./ValidationService");
-const { getDb } = require("./db");
+const env = require("./Helper/editENV");
+const ValidationService = require("./Helper/ValidationService");
+const { getDb } = require("./Helper/db");
 
 const nodeEnv = process.env.NODE_ENV;
 const ACCOUNT_STATUS = {
@@ -22,10 +22,10 @@ router.post("/return-sub-accounts", async (req, res) => {
     const { subAccountSid } = req.body;
     const result = await sms.returnSubAccounts(subAccountSid);
     const returnForLogging = JSON.stringify(result);
-    logger.info(`returnSubAccounts ${returnForLogging}`);
+    logger(`returnSubAccounts ${returnForLogging}`);
     return res.status(200).send(`returnSubAccounts ${returnForLogging}`);
   } catch (err) {
-    logger.error(`returnSubAccounts ${err}`);
+    logger(`returnSubAccounts ${err}`);
     return res
       .status(400)
       .send({ error: "returnSubAccounts", message: err.message });
@@ -39,10 +39,10 @@ router.post("/check-credentials-async", async (req, res) => {
     const { subAccountSid } = req.body;
     const result = await sms.checkCredentialsAsync(subAccountSid);
     const returnForLogging = JSON.stringify(result);
-    logger.info(`checkCredentialsAsync ${returnForLogging}`);
+    logger(`checkCredentialsAsync ${returnForLogging}`);
     return res.status(200).send(`checkCredentialsAsync ${returnForLogging}`);
   } catch (err) {
-    logger.error(`checkCredentialsAsync ${err}`);
+    logger(`checkCredentialsAsync ${err}`);
     return res
       .status(400)
       .send({ error: "checkCredentialsAsync", message: err.message });
@@ -56,10 +56,10 @@ router.post("/available-phone-numbers", async (req, res) => {
     const { country } = req.body;
     const result = await sms.availablePhoneNumbers(country);
     const returnForLogging = JSON.stringify(result);
-    logger.info(`availablePhoneNumbers ${result.length} ${returnForLogging}`);
+    logger(`availablePhoneNumbers ${result.length} ${returnForLogging}`);
     return res.status(200).send(`availablePhoneNumbers ${returnForLogging}`);
   } catch (err) {
-    logger.error(`availablePhoneNumbers ${err}`);
+    logger(`availablePhoneNumbers ${err}`);
     return res
       .status(400)
       .send({ error: "availablePhoneNumbers", message: err.message });
@@ -73,10 +73,10 @@ router.post("/calculate-account-billing", async (req, res) => {
     const { timeZone } = req.body;
     const result = await sms.calculateAccountBilling(timeZone);
     const returnForLogging = JSON.stringify(result);
-    logger.info(`calculateAccountBilling ${returnForLogging}`);
+    logger(`calculateAccountBilling ${returnForLogging}`);
     return res.status(200).send(`calculateAccountBilling ${returnForLogging}`);
   } catch (err) {
-    logger.error(`calculateAccountBilling ${err}`);
+    logger(`calculateAccountBilling ${err}`);
     return res
       .status(400)
       .send({ error: "calculateAccountBilling", message: err.message });
@@ -105,10 +105,10 @@ router.post("/send-sms", async (req, res) => {
     if (mediaUrl) payload.mediaUrl = mediaUrl;
     const result = await sms.sendSMS(payload);
     const returnForLogging = JSON.stringify(result);
-    logger.info(`sendSMS ${returnForLogging}`);
+    logger(`sendSMS ${returnForLogging}`);
     return res.status(200).send(`sendSMS ${returnForLogging}`);
   } catch (err) {
-    logger.error(`sendSMS ${err}`);
+    logger(`sendSMS ${err}`);
     return res.status(400).send({ error: "sendSMS", message: err.message });
   }
 });
@@ -120,10 +120,10 @@ router.post("/list-all-messages", async (req, res) => {
     const { limit } = req.body;
     const result = await sms.listAllMessages({ limit });
     const returnForLogging = JSON.stringify(result);
-    logger.info(`listAllMessages ${result.length} ${returnForLogging}`);
+    logger(`listAllMessages ${result.length} ${returnForLogging}`);
     return res.status(200).send(result);
   } catch (err) {
-    logger.error(`listAllMessages ${err}`);
+    logger(`listAllMessages ${err}`);
     return res
       .status(400)
       .send({ error: "listAllMessages", message: err.message });
@@ -146,10 +146,10 @@ router.post("/list-filtered-messages", async (req, res) => {
       limit,
     });
     const returnForLogging = JSON.stringify(result);
-    logger.info(`listFilteredMessages ${result.length} ${returnForLogging}`);
+    logger(`listFilteredMessages ${result.length} ${returnForLogging}`);
     return res.status(200).send(`listFilteredMessages ${returnForLogging}`);
   } catch (err) {
-    logger.error(`listFilteredMessages ${err}`);
+    logger(`listFilteredMessages ${err}`);
     return res
       .status(400)
       .send({ error: "listFilteredMessages", message: err.message });
@@ -164,10 +164,10 @@ router.post("/change-account-status", async (req, res) => {
     const { subAccountSid, status } = req.body;
     const result = await sms.changeAccountStatus(status, subAccountSid);
     const returnForLogging = JSON.stringify(result);
-    logger.info(`changeAccountStatus ${returnForLogging}`);
+    logger(`changeAccountStatus ${returnForLogging}`);
     return res.status(200).send(`changeAccountStatus ${returnForLogging}`);
   } catch (err) {
-    logger.error(`changeAccountStatus ${err}`);
+    logger(`changeAccountStatus ${err}`);
     return res
       .status(400)
       .send({ error: "changeAccountStatus", message: err.message });
@@ -185,17 +185,17 @@ router.post("/create-sub-account", async (req, res) => {
     env.setEnvValue("TWILIO_SUBACCOUNT_SID", accountSid);
     env.setEnvValue("TWILIO_SUBACCOUNT_AUTH_TOKEN", password);
     const returnForLogging = JSON.stringify(result);
-    logger.info(`createSubAccount ${returnForLogging}`);
+    logger(`createSubAccount ${returnForLogging}`);
     const addPhoneNumberResult = await sms.addPhoneNumber(
       accountSid,
       password,
       country
     );
     const returnForLogging2 = JSON.stringify(addPhoneNumberResult);
-    logger.info(`addPhoneNumber ${returnForLogging2}`);
+    logger(`addPhoneNumber ${returnForLogging2}`);
     return res.status(200).send(`createSubAccount ${returnForLogging}`);
   } catch (err) {
-    logger.error(`createSubAccount ${err}`);
+    logger(`createSubAccount ${err}`);
     return res
       .status(400)
       .send({ error: "createSubAccount", message: err.message });
@@ -210,10 +210,10 @@ router.post("/validate-phone-number", async (req, res) => {
     const { phoneNumber, validationRules } = req.body;
     const result = await sms.validatePhoneNumber(phoneNumber, validationRules);
     const returnForLogging = JSON.stringify(result);
-    logger.info(`validatePhoneNumber ${returnForLogging}`);
+    logger(`validatePhoneNumber ${returnForLogging}`);
     return res.status(200).send(`validatePhoneNumber ${returnForLogging}`);
   } catch (err) {
-    logger.error(`validatePhoneNumber ${err}`);
+    logger(`validatePhoneNumber ${err}`);
     return res
       .status(400)
       .send({ error: "validatePhoneNumber", message: err.message });
@@ -228,10 +228,10 @@ router.post("/send-verification", async (req, res) => {
     const { phoneNumber, channel } = req.body;
     const result = await sms.sendNumberVerification(phoneNumber, channel);
     const returnForLogging = JSON.stringify(result);
-    logger.info(`sendNumberVerification ${returnForLogging}`);
+    logger(`sendNumberVerification ${returnForLogging}`);
     return res.status(200).send(`sendNumberVerification ${returnForLogging}`);
   } catch (err) {
-    logger.error(`sendNumberVerification ${err}`);
+    logger(`sendNumberVerification ${err}`);
     return res
       .status(400)
       .send({ error: "sendNumberVerification", message: err.message });
@@ -249,7 +249,7 @@ router.post("/verify-code", async (req, res) => {
       verificationCode
     );
     const returnForLogging = JSON.stringify(result);
-    logger.info(`updateNumberVerification ${returnForLogging}`);
+    logger(`updateNumberVerification ${returnForLogging}`);
     if (result) {
       // Code verification successful
       return res
@@ -262,7 +262,7 @@ router.post("/verify-code", async (req, res) => {
         .send(`updateNumberVerification ${returnForLogging}`);
     }
   } catch (err) {
-    logger.error(`updateNumberVerification ${err}`);
+    logger(`updateNumberVerification ${err}`);
     return res
       .status(400)
       .send({ error: "updateNumberVerification", message: err.message });
@@ -274,7 +274,7 @@ router.post("/message-status", async (req, res) => {
     MessageStatus: "string",
   });
   const { MessageSid, MessageStatus } = req.body;
-  console.log(`SID: ${MessageSid}, Status: ${MessageStatus}`);
+  logger(`SID: ${MessageSid}, Status: ${MessageStatus}`);
 
   return res.status(200).send(`SID: ${MessageSid}, Status: ${MessageStatus}`);
 });
@@ -287,10 +287,10 @@ router.post("/add-verified-phone-number", async (req, res) => {
     const { phoneNumber, friendlyName } = req.body;
     const result = await sms.addVerifiedPhoneNumber(phoneNumber, friendlyName);
     const returnForLogging = JSON.stringify(result);
-    logger.info(`addVerifiedPhoneNumber ${returnForLogging}`);
+    logger(`addVerifiedPhoneNumber ${returnForLogging}`);
     return res.status(200).send(`addVerifiedPhoneNumber ${returnForLogging}`);
   } catch (err) {
-    logger.error(`addVerifiedPhoneNumber ${err}`);
+    logger(`addVerifiedPhoneNumber ${err}`);
     return res
       .status(400)
       .send({ error: "addVerifiedPhoneNumber", message: err.message });
@@ -300,10 +300,10 @@ router.post("/verification-attempts", async (req, res) => {
   try {
     const result = await sms.verificationAttempts();
     const returnForLogging = JSON.stringify(result);
-    logger.info(`verificationAttempts ${returnForLogging}`);
+    logger(`verificationAttempts ${returnForLogging}`);
     return res.status(200).send(`verificationAttempts ${returnForLogging}`);
   } catch (err) {
-    logger.error(`verificationAttempts ${err}`);
+    logger(`verificationAttempts ${err}`);
     return res
       .status(400)
       .send({ error: "verificationAttempts", message: err.message });
@@ -325,7 +325,7 @@ router.post("/sms_status_callback", async (req, res) => {
     const db = getDb();
     const message = req.body;
     await db.collection("smsCallbackURL").insertOne(message);
-    console.log(
+    logger(
       `essage SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}`
     );
     return res
@@ -334,8 +334,8 @@ router.post("/sms_status_callback", async (req, res) => {
         `Message SID: ${MessageSid}, Message Status: ${MessageStatus}, Recipient Number: ${To}`
       );
   } catch (err) {
-    logger.error(`sms_status_callback ${err}`);
-    console.log(`sms_status_callback ${err}`);
+    logger(`sms_status_callback ${err}`);
+    logger(`sms_status_callback ${err}`);
     return res
       .status(400)
       .send({ error: "sms_status_callback", message: err.message });
@@ -352,14 +352,14 @@ router.post("/messaging_service_callback", async (req, res) => {
     const message = req.body;
     await db.collection("messageCallbackURL").insertOne(message);
     const returnForLogging = JSON.stringify(message);
-    logger.info(`messaging_service_callback ${returnForLogging}`);
-    console.log(`messaging_service_callback initiated ${returnForLogging}`);
+    logger(`messaging_service_callback ${returnForLogging}`);
+    logger(`messaging_service_callback initiated ${returnForLogging}`);
     return res
       .status(200)
       .send(`messaging_service_callback initiated ${returnForLogging}`);
   } catch (err) {
-    logger.error(`messaging_service_callback ${err}`);
-    console.log(`messaging_service_callback ${err}`);
+    logger(`messaging_service_callback ${err}`);
+    logger(`messaging_service_callback ${err}`);
     return res
       .status(400)
       .send({ error: "messaging_service_callback", message: err.message });
@@ -376,14 +376,14 @@ router.post("/messaging_fallback_URL", async (req, res) => {
     const message = req.body;
     await db.collection("fallBackURL").insertOne(message);
     const returnForLogging = JSON.stringify(message);
-    logger.info(`messaging_fallback_URL ${returnForLogging}`);
-    console.log(`messaging_fallback_URL initiated ${returnForLogging}`);
+    logger(`messaging_fallback_URL ${returnForLogging}`);
+    logger(`messaging_fallback_URL initiated ${returnForLogging}`);
     return res
       .status(200)
       .send(`messaging_fallback_URL initiated ${returnForLogging}`);
   } catch (err) {
-    logger.error(`messaging_fallback_URL ${err}`);
-    console.log(`messaging_fallback_URL ${err}`);
+    logger(`messaging_fallback_URL ${err}`);
+    logger(`messaging_fallback_URL ${err}`);
     return res
       .status(400)
       .send({ error: "messaging_fallback_URL", message: err.message });
@@ -400,14 +400,14 @@ router.post("/messaging_callback_URL", async (req, res) => {
     const message = req.body;
     await db.collection("callBackURL").insertOne(message);
     const returnForLogging = JSON.stringify(message);
-    logger.info(`messaging_callback_URL ${returnForLogging}`);
-    console.log(`messaging_callback_URL initiated ${returnForLogging}`);
+    logger(`messaging_callback_URL ${returnForLogging}`);
+    logger(`messaging_callback_URL initiated ${returnForLogging}`);
     return res
       .status(200)
       .send(`messaging_callback_URL initiated ${returnForLogging}`);
   } catch (err) {
-    logger.error(`messaging_callback_URL ${err}`);
-    console.log(`messaging_callback_URL ${err}`);
+    logger(`messaging_callback_URL ${err}`);
+    logger(`messaging_callback_URL ${err}`);
     return res
       .status(400)
       .send({ error: "messaging_callback_URL", message: err.message });

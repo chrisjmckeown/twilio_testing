@@ -1,8 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const logger = require("./log/loggerService");
+const logger = require("./Logger/loggerService");
 const routes = require("./routes");
-const { connectToDb } = require("./db");
+const { connectToDb } = require("./Helper/db");
 
 require("dotenv").config();
 
@@ -19,16 +19,15 @@ connectToDb((err) => {
     app.use((req, res, next) => {
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "*");
-      logger.info(`${req.method} ${req.url} ${res.statusCode}`);
+      logger(`${req.method} ${req.url} ${res.statusCode}`);
       next();
     });
     // Use API routes
     app.use("/api", routes);
 
     app.listen(port, () => {
-      logger.info(`Server listening at http://localhost:${port}`);
-      console.log(`Server listening at http://localhost:${port}`);
+      logger(`Server listening at http://localhost:${port}`);
     });
-    console.log("Twilio app running");
+    logger("Twilio app running");
   }
 });

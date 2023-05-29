@@ -1,6 +1,6 @@
 require("dotenv").config();
 const _ = require("lodash");
-const logger = require("./log/loggerService");
+const logger = require("./Logger/loggerService");
 
 const ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID;
 const AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
@@ -33,7 +33,7 @@ async function availablePhoneNumbers(countryCode) {
     }
     return smsCapableNumbers;
   } catch (err) {
-    logger.error(`availablePhoneNumbers ${err}`);
+    logger(`availablePhoneNumbers ${err}`);
     throw new Error(err.message);
   }
 }
@@ -51,7 +51,7 @@ module.exports = {
       const subAccounts = await account.api.accounts(subAccountSid).fetch();
       return subAccounts;
     } catch (err) {
-      logger.error(`returnSubAccounts ${err}`);
+      logger(`returnSubAccounts ${err}`);
       throw new Error(err.message);
     }
   },
@@ -67,7 +67,7 @@ module.exports = {
       const smsCapableNumbers = await availablePhoneNumbers(countryCode);
       return smsCapableNumbers;
     } catch (err) {
-      logger.error(`availablePhoneNumbers ${err}`);
+      logger(`availablePhoneNumbers ${err}`);
       throw new Error(err.message);
     }
   },
@@ -91,7 +91,7 @@ module.exports = {
       );
       return subAccountTwilioAPIApp;
     } catch (err) {
-      logger.error(`createSubAccount ${err}`);
+      logger(`createSubAccount ${err}`);
       throw new Error(err.message);
     }
   },
@@ -114,7 +114,7 @@ module.exports = {
       });
       return account;
     } catch (err) {
-      logger.error(`addPhoneNumber ${err}`);
+      logger(`addPhoneNumber ${err}`);
       throw new Error(err.message);
     }
   },
@@ -138,7 +138,7 @@ module.exports = {
       const result = await account.messages.create(params);
       return result;
     } catch (err) {
-      logger.error(`sendSMS ${err}`);
+      logger(`sendSMS ${err}`);
       throw new Error(err.message);
     }
   },
@@ -155,12 +155,12 @@ module.exports = {
       const account = require("twilio")(ACCOUNT_SID, AUTH_TOKEN);
 
       const subAaccount = await account.api.accounts(subAccountSid).fetch();
-      logger.info(
+      logger(
         `TwilioService.checkCredentials          - lookup succeeded: name: ${subAaccount.friendlyName}, status: ${subAaccount.status}`
       );
       return _.get(subAaccount, "status", "") === "active";
     } catch (err) {
-      logger.error(`checkCredentialsAsync ${err}`);
+      logger(`checkCredentialsAsync ${err}`);
       throw new Error(err.message);
     }
   },
@@ -226,7 +226,7 @@ module.exports = {
         }
       );
     } catch (err) {
-      logger.error(`calculateAccountBilling ${err}`);
+      logger(`calculateAccountBilling ${err}`);
       throw new Error(err.message);
     }
   },
@@ -249,7 +249,7 @@ module.exports = {
       }));
       return messages;
     } catch (err) {
-      logger.error(`listAllMessages ${err}`);
+      logger(`listAllMessages ${err}`);
       throw new Error(err.message);
     }
   },
@@ -275,7 +275,7 @@ module.exports = {
       }));
       return result;
     } catch (err) {
-      logger.error(`smsListFilteredMessages ${err}`);
+      logger(`smsListFilteredMessages ${err}`);
       throw new Error(err.message);
     }
   },
@@ -296,7 +296,7 @@ module.exports = {
         .update({ status });
       return `Account ${subAccount.friendlyName} has been successfully changed to the status:${status}`;
     } catch (err) {
-      logger.error(`changeAccountStatus ${err}`);
+      logger(`changeAccountStatus ${err}`);
       throw new Error(err.message);
     }
   },
@@ -326,7 +326,7 @@ module.exports = {
       }
       return result;
     } catch (err) {
-      logger.error(`validatePhoneNumber ${err}`);
+      logger(`validatePhoneNumber ${err}`);
       throw new Error(err.message);
     }
   },
@@ -347,7 +347,7 @@ module.exports = {
         .verifications.create({ to: phoneNumber, channel });
       return result;
     } catch (err) {
-      logger.error(`sendNumberVerification ${err}`);
+      logger(`sendNumberVerification ${err}`);
       throw new Error(err.message);
     }
   },
@@ -373,7 +373,7 @@ module.exports = {
         return false;
       }
     } catch (err) {
-      logger.error(`updateNumberVerification ${err}`);
+      logger(`updateNumberVerification ${err}`);
       throw new Error(err.message);
     }
   },
@@ -395,7 +395,7 @@ module.exports = {
       });
       return validationRequests;
     } catch (err) {
-      logger.error(`addVerifiedPhoneNumber ${err}`);
+      logger(`addVerifiedPhoneNumber ${err}`);
       throw new Error(err.message);
     }
   },
@@ -416,7 +416,7 @@ module.exports = {
         await account.verify.v2.verificationAttempts.list({ limit: 20 });
       return verificationAttempts;
     } catch (err) {
-      logger.error(`verificationAttempts ${err}`);
+      logger(`verificationAttempts ${err}`);
       throw new Error(err.message);
     }
   },
