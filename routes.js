@@ -6,6 +6,8 @@ const _ = require("lodash");
 const env = require("./Helper/editENV");
 const ValidationService = require("./Helper/ValidationService");
 const { getDb } = require("./Helper/db");
+const client = require("./Helper/whatsapp");
+
 
 const nodeEnv = process.env.NODE_ENV;
 const ACCOUNT_STATUS = {
@@ -417,6 +419,22 @@ router.get("/messaging_callback_URL", async (req, res) => {
   const db = getDb();
   const result = await db.collection("callBackURL").find().toArray();
   res.status(200).json(result);
+});
+
+const isNumberOnWhatsapp = async (number) => {
+  try {
+    return await client.isRegisteredUser(number)
+  } catch (err) {
+    return err.message
+  }
+}
+router.get("/whatsappcheck/:phoneNumber", async (req, res) => {
+  const { phoneNumber } = req.params;
+  const sanitized_number = phoneNumber.toString().replace(/[- )(]/g, ""); // remove unnecessary chars from the number
+
+  console.log(sanitized_number)
+  const response = await isNumberOnWhatsapp(sanitized_number);
+  res.status(200).json({ message: "hello world", response });
 });
 router.get("*", (req, res) => {
   return res.status(200).send("catch all end point");

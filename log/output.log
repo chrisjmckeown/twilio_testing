@@ -1,2 +1,154 @@
-{"level":"info","message":"Twilio app running","service":"twilio-service","timestamp":"2023-05-29T08:49:39.023Z"}
-{"level":"info","message":"Server listening at http://localhost:7000","service":"twilio-service","timestamp":"2023-05-29T08:49:39.024Z"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck/:+6421763733 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck/:+6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck:+6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck:+6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck:6421763733 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck:6421763733 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck:6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/:6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck:6421763733 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck:6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck:6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck:+6421763733 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck/:+6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/:+6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/phoneNumber:+6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/+6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/6421763733 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck/6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/+6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/+6421763733hk 200"}
+{"level":"info","message":"GET /api/whatsappcheck/+[6421763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/+[64]21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/+(64)21763733 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck/+(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/+(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"GET /api/whatsappcheck/(64)21763733 200"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}
+{"level":"info","message":"Twilio app running"}
+{"level":"info","message":"Server listening at http://localhost:7000"}

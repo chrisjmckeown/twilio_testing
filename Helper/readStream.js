@@ -4,6 +4,7 @@ const logger = require("../Logger/loggerService");
 
 module.exports = {
   readFromCSV: async (filePath) => {
+    logger(`Reading data from ${filePath}`);
     const results = [];
     const batchSize = 500000;
     let count = 0;
@@ -12,14 +13,14 @@ module.exports = {
         .pipe(csvParse())
         .on("data", (data) => {
           if (count === batchSize) {
-            logger(`${batchSize} read ${results.length} in total`);
+            logger(`${results.length} read`);
             count = 0;
           }
           count++;
           results.push(data);
         })
         .on("end", () => {
-          logger(`All rows read ${filePath} ${results.length}}`);
+          logger(`All rows read ${filePath} ${results.length}`);
           resolve(results);
         })
         .on("error", (error) => {

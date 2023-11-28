@@ -1,9 +1,9 @@
 .env
+err.log
+output.log
+
 /node_modules
 /FrontEnd
-/DomainSite
-/Logger/output.log
-/Logger/err.log
-cert.txt
-/Bash
-/Personal
+/log
+/AmalgamatedResults
+/SS
